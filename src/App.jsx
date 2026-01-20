@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
 import { loadTodosFromLocalStorage, addTodoToStorage, updateTodoInStorage, deleteTodoFromStorage } from "./helpers/todoStorage";
+import { groupTodosByDate, formatDateSubtitle } from "./helpers/dateFormatting";
 
 function App() {
   const [todos, setTodos] = useState(() => loadTodosFromLocalStorage());
@@ -44,46 +45,72 @@ function App() {
     <div className="todo-app">
       <h1>To Do List</h1>
 
-      <ul>
-        {todos.map(todo => (
-          <li key={todo.id}>
-            <input 
-              type="checkbox" 
-              checked={todo.completed}
-              onChange={() => {
-                updateTodo(todo.id, { completed: !todo.completed });
-              }}
-            />
-            <span className={todo.completed ? 'completed' : ''}>
-              {todo.title}
-            </span>
-            <button 
-              className="delete-btn"
-              onClick={() => deleteTodo(todo.id)}
-              aria-label="Delete todo"
-            >
-              🗑️
-            </button>
-          </li>
-        ))}
+      {groupTodosByDate(todos).map(group => (
+        <div key={`${group.date.getFullYear()}-${group.date.getMonth()}-${group.date.getDate()}`}>
+          <h2 className="date-subtitle">{formatDateSubtitle(group.date)}</h2>
+          <ul>
+            {group.todos.map(todo => (
+              <li key={todo.id}>
+                <input 
+                  type="checkbox" 
+                  checked={todo.completed}
+                  onChange={() => {
+                    updateTodo(todo.id, { completed: !todo.completed });
+                  }}
+                />
+                <span className={todo.completed ? 'completed' : ''}>
+                  {todo.title}
+                </span>
+                <button 
+                  className="delete-btn"
+                  onClick={() => deleteTodo(todo.id)}
+                  aria-label="Delete todo"
+                >
+                  🗑️
+                </button>
+              </li>
+            ))}
+            <li>
+              <form onSubmit={e => { e.preventDefault(); addTodo(); }}>
+                <input
+                  type="text"
+                  ref={inputRef}
+                  value={newTodoTitle}
+                  aria-label="New todo title"
+                  placeholder="Add a new todo..."
+                  onChange={e => setNewTodoTitle(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') addTodo();
+                  }}
+                />
+              </form>
+            </li>
+          </ul>
+        </div>
+      ))}
 
-        <li>
-          <form onSubmit={e => { e.preventDefault(); addTodo(); }}>
-            <input
-              type="text"
-              ref={inputRef}
-              value={newTodoTitle}
-              aria-label="New todo title"
-              placeholder="Add a new todo..."
-              onChange={e => setNewTodoTitle(e.target.value)}
-              onKeyDown={e => {
-                if (e.key === 'Enter') addTodo();
-              }}
-            />
-          </form>
-        </li>
-
-      </ul>
+      {todos.length === 0 && (
+        <div>
+          <h2 className="date-subtitle">Today</h2>
+          <ul>
+            <li>
+              <form onSubmit={e => { e.preventDefault(); addTodo(); }}>
+                <input
+                  type="text"
+                  ref={inputRef}
+                  value={newTodoTitle}
+                  aria-label="New todo title"
+                  placeholder="Add a new todo..."
+                  onChange={e => setNewTodoTitle(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') addTodo();
+                  }}
+                />
+              </form>
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

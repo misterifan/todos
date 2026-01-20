@@ -19,7 +19,8 @@ export const loadTodosFromLocalStorage = () => {
 };
 
 export const addTodoToStorage = (todos, newTodo) => {
-  const updatedTodos = [...todos, newTodo];
+  const todoWithDate = { ...newTodo, date: new Date().toISOString() };
+  const updatedTodos = [...todos, todoWithDate];
   saveTodosToLocalStorage(updatedTodos);
   return updatedTodos;
 };

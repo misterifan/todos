@@ -44,6 +44,14 @@
 .todo-app {
   text-align: left;
 
+  .date-subtitle {
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    font-size: 1.1em;
+    color: #666;
+    font-weight: 500;
+  }
+
   ul {
     padding: 0;
   }
