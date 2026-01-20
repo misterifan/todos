@@ -57,17 +57,19 @@ function App() {
         ))}
 
         <li>
-          <input
-            type="text"
-            ref={inputRef}
-            value={newTodoTitle}
-            aria-label="New todo title"
-            placeholder="Add a new todo..."
-            onChange={e => setNewTodoTitle(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter') addTodo();
-            }}
-          />
+          <form onSubmit={e => { e.preventDefault(); addTodo(); }}>
+            <input
+              type="text"
+              ref={inputRef}
+              value={newTodoTitle}
+              aria-label="New todo title"
+              placeholder="Add a new todo..."
+              onChange={e => setNewTodoTitle(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') addTodo();
+              }}
+            />
+          </form>
         </li>
 
       </ul>
