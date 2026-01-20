@@ -2,10 +2,7 @@ import "./App.css";
 import { useState, useEffect, useRef } from "react";
 
 function App() {
-  const [todos, setTodos] = useState([
-    { id: 1, title: "Learn React", completed: true },
-    { id: 2, title: "Build a Todo App", completed: false },
-  ]);
+  const [todos, setTodos] = useState([]);
   const [newTodoTitle, setNewTodoTitle] = useState("");
   const inputRef = useRef(null);
 
