@@ -1,0 +1,33 @@
+const TODOS_KEY = 'todos';
+
+export const saveTodosToLocalStorage = (todos) => {
+  try {
+    localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
+  } catch (error) {
+    console.error('Failed to save todos to localStorage:', error);
+  }
+};
+
+export const loadTodosFromLocalStorage = () => {
+  try {
+    const todos = localStorage.getItem(TODOS_KEY);
+    return todos ? JSON.parse(todos) : [];
+  } catch (error) {
+    console.error('Failed to load todos from localStorage:', error);
+    return [];
+  }
+};
+
+export const addTodoToStorage = (todos, newTodo) => {
+  const updatedTodos = [...todos, newTodo];
+  saveTodosToLocalStorage(updatedTodos);
+  return updatedTodos;
+};
+
+export const updateTodoInStorage = (todos, id, updatedFields) => {
+  const updatedTodos = todos.map(todo =>
+    todo.id === id ? { ...todo, ...updatedFields } : todo
+  );
+  saveTodosToLocalStorage(updatedTodos);
+  return updatedTodos;
+};

@@ -1,26 +1,21 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
+import { loadTodosFromLocalStorage, addTodoToStorage, updateTodoInStorage } from "./helpers/todoStorage";
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => loadTodosFromLocalStorage());
   const [newTodoTitle, setNewTodoTitle] = useState("");
   const inputRef = useRef(null);
 
   const updateTodo = (id, updatedFields) => {
-    setTodos(prev =>
-      prev.map(todo =>
-        todo.id === id ? { ...todo, ...updatedFields } : todo
-      )
-    );
+    setTodos(prev => updateTodoInStorage(prev, id, updatedFields));
   };
 
   const addTodo = () => {
     if (!newTodoTitle.trim()) return;
 
-    setTodos(prev => [
-      ...prev,
-      { id: Date.now(), title: newTodoTitle, completed: false }
-    ]);
+    const newTodo = { id: Date.now(), title: newTodoTitle, completed: false };
+    setTodos(prev => addTodoToStorage(prev, newTodo));
 
     setNewTodoTitle("");
   };
