@@ -31,3 +31,9 @@ export const updateTodoInStorage = (todos, id, updatedFields) => {
   saveTodosToLocalStorage(updatedTodos);
   return updatedTodos;
 };
+
+export const deleteTodoFromStorage = (todos, id) => {
+  const updatedTodos = todos.filter(todo => todo.id !== id);
+  saveTodosToLocalStorage(updatedTodos);
+  return updatedTodos;
+};

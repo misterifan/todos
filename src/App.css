@@ -52,16 +52,35 @@
     list-style: none;
     display: flex;
     align-items: center;
+    gap: 0.6em;
 
     span.completed {
       text-decoration: line-through;
     }
 
+    span {
+      flex: 1;
+    }
+
     input[type="checkbox"] {
       width: 1em;
       height: 1em;
-      margin-right: 0.6em;
       cursor: pointer;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      font-size: 1.2em;
+      cursor: pointer;
+      padding: 0.2em;
+      margin-left: auto;
+      opacity: 0.7;
+      transition: opacity 200ms;
+    }
+
+    .delete-btn:hover {
+      opacity: 1;
     }
 
     input[type="text"] {

@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
-import { loadTodosFromLocalStorage, addTodoToStorage, updateTodoInStorage } from "./helpers/todoStorage";
+import { loadTodosFromLocalStorage, addTodoToStorage, updateTodoInStorage, deleteTodoFromStorage } from "./helpers/todoStorage";
 
 function App() {
   const [todos, setTodos] = useState(() => loadTodosFromLocalStorage());
@@ -9,6 +9,10 @@ function App() {
 
   const updateTodo = (id, updatedFields) => {
     setTodos(prev => updateTodoInStorage(prev, id, updatedFields));
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(prev => deleteTodoFromStorage(prev, id));
   };
 
   const addTodo = () => {
@@ -53,6 +57,13 @@ function App() {
             <span className={todo.completed ? 'completed' : ''}>
               {todo.title}
             </span>
+            <button 
+              className="delete-btn"
+              onClick={() => deleteTodo(todo.id)}
+              aria-label="Delete todo"
+            >
+              🗑️
+            </button>
           </li>
         ))}
 
