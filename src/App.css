@@ -46,7 +46,7 @@
 
   .date-subtitle {
     margin-top: 1.5em;
-    margin-bottom: 0.8em;
+    margin-bottom: 0;
     font-size: 1.1em;
     color: #666;
     font-weight: 500;
@@ -54,6 +54,7 @@
 
   ul {
     padding: 0;
+    margin-top: 0;
   }
 
   li {
@@ -79,7 +80,7 @@
     .delete-btn {
       background: none;
       border: none;
-      font-size: 1.2em;
+      font-size: 0.9em;
       cursor: pointer;
       padding: 0.2em;
       margin-left: auto;
