@@ -1,3 +1,4 @@
+import "./App.css";
 import { useState, useEffect, useRef } from "react";
 
 function App() {
@@ -5,41 +6,29 @@ function App() {
     { id: 1, title: "Learn React", completed: false },
     { id: 2, title: "Build a Todo App", completed: false },
   ]);
-  const [addNew, setAddNew] = useState(false);
   const [newTodoTitle, setNewTodoTitle] = useState("");
   const inputRef = useRef(null);
 
-  let addButtonText = addNew ? "Cancel" : "+ Add";
+  const addTodo = () => {
+    if (!newTodoTitle.trim()) return;
 
-  const addTodo = (title) => {
-    if (!title.trim()) return;
-    const newTodo = {
-      id: Date.now(),
-      title,
-      completed: false
-    };
-    setTodos([...todos, newTodo]);
+    setTodos(prev => [
+      ...prev,
+      { id: Date.now(), title: newTodoTitle, completed: false }
+    ]);
+
     setNewTodoTitle("");
-    setAddNew(false);
-  };
-
-  const toggleAddNew = () => {
-    setAddNew(!addNew);
-  };
-
-  const handleInputChange = (title) => {
-    setNewTodoTitle(title);
   };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key === 'n') {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
         e.preventDefault();
-        setAddNew(true);
-        setTimeout(() => inputRef.current?.focus(), 0);
+        inputRef.current?.focus();
       }
       if (e.key === 'Escape') {
-        setAddNew(false);
+        setNewTodoTitle("");
+        inputRef.current?.blur();
       }
     };
 
@@ -50,17 +39,25 @@ function App() {
   return (
     <div className="todo-app">
       <h1>To Do List</h1>
-      <button onClick={toggleAddNew}>{addButtonText}</button>
+
       <ul>
         {todos.map(todo => (
           <li key={todo.id}>{todo.title}</li>
         ))}
-        {addNew && (<li>
-            <input ref={inputRef} type="text" placeholder="Add a new todo" value={newTodoTitle} 
-                onChange={(e) => handleInputChange(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && addTodo(newTodoTitle)} />
-            <button onClick={() => addTodo(newTodoTitle)}>Ok</button>
-        </li>)}
+
+        <li>
+          <input
+            ref={inputRef}
+            value={newTodoTitle}
+            aria-label="New todo title"
+            placeholder="Add a new todo"
+            onChange={e => setNewTodoTitle(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') addTodo();
+            }}
+          />
+        </li>
+
       </ul>
     </div>
   );
